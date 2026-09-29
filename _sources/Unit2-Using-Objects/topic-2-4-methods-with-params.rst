@@ -342,65 +342,65 @@ Use the Code Lens button or this |Java Visualizer| to step through the code.
     ====
     // Test for 2.4.4 Song
       import static org.junit.Assert.*;
-      import org.junit.*;;
+      import org.junit.*;
       import java.io.*;
-      
+
       public class RunestoneTests extends CodeTestHelper
       {
           public String verse1 = "Old MacDonald had a farm\nE-I-E-I-O\nAnd on that farm he had a cow\nE-I-E-I-O\nWith a moo moo here,\nAnd a moo moo there,\nOld MacDonald had a farm\nE-I-E-I-O";
           public String verse2 = "Old MacDonald had a farm\nE-I-E-I-O\nAnd on that farm he had a duck\nE-I-E-I-O\nWith a quack quack here,\nAnd a quack quack there,\nOld MacDonald had a farm\nE-I-E-I-O";
-      
+
           public String verse3 = "Old MacDonald had a farm\nE-I-E-I-O\nAnd on that farm he had a ...\nE-I-E-I-O\nWith a ... ... here,\nAnd a ... ... there,\nOld MacDonald had a farm\nE-I-E-I-O";
-      
+
           public RunestoneTests() {
               super("Song");
           }
-      
+
           @Test
           public void test1()
           {
               String output = getMethodOutput("main");
               output = output.replace(verse1, "").trim();
               output = output.replace(verse2, "").trim();
-              
+
               boolean passed = output.length() > 0;
-              
+
               passed = getResults(verse3, output, "Contains new verse", passed);
               assertTrue(passed);
           }
-      
+
           @Test
           public void test2()
           {
               String output = getMethodOutput("main");
-      
+
               boolean passed1 = output.contains(verse1);
               boolean passed2 = output.contains(verse2);
               boolean passed = passed1 && passed2;
-      
+
               String exp = "Verse 1: true\nVerse 2: true";
               String act = "Verse 1: " + passed1 + "\nVerse 2: " + passed2;
-      
+
               passed = getResults(exp, act, "Contains original verses", passed);
               assertTrue(passed);
           }
-      
+
           @Test
           public void testCode1() {
               String[] lines = getCode().split("\n");
               String expect = "s.verse(";
               String output = "";
               int count = 0;
-      
+
               for (int i = 0; i < lines.length; i++) {
                   if (lines[i].contains(expect)) {
                       output += lines[i].trim() + "\n";
-                      count++;               
+                      count++;
                   }
               }
-      
+
               String expected = "s.verse(\"cow\", \"moo\");\ns.verse(\"duck\",\"quack\");\ns.verse(\"...\", \"...\");";
-      
+
               boolean passed = count >= 3;
               passed = getResults(expected, output, "Added third call to verse", passed);
               assertTrue(passed);
